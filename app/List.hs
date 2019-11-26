@@ -27,6 +27,7 @@ instance Foldable List where
     foldr f z (Cons h t) = f h (foldr f z t)
 
 nat :: Int -> List Int
+nat 0 = Nil
 nat n =
     go 1
         where
