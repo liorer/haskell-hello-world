@@ -12,5 +12,8 @@ sum = foldl (+) 0
 len :: Foldable t => t a -> Int
 len = foldl (\x _ -> x + 1) 0
 
--- isEmpty
--- contains
+isEmpty :: Foldable t => t a -> Bool
+isEmpty = foldl (\_ _ -> False) True
+
+contains :: (Eq a, Foldable t) => a -> t a -> Bool
+contains a = foldl (\c x -> c || x == a) False
