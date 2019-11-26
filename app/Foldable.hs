@@ -1,6 +1,8 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 module Foldable where
 
-import Prelude hiding (Foldable, foldl, foldr, sum)
+import Prelude (Num, Eq(..), Int, Bool(..), (||), (+))
 
 class Foldable t where
     foldl :: (b -> a -> b) -> b -> t a -> b

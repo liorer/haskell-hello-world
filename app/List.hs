@@ -1,8 +1,9 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE InstanceSigs #-}
 
 module List where
 
-import Prelude hiding (foldl, foldr, map, sum, flip, take, drop, Foldable)
+import Prelude (Show(..), Int, (+), (-), (++), (==))
 import Foldable (Foldable(..))
 
 data List a
@@ -45,7 +46,7 @@ take 0 _ = Nil
 take _ Nil = Nil
 take n (Cons h t) = Cons h (take (n - 1) t)
 
---drop :: Int -> List a -> List a
+drop :: Int -> List a -> List a
 drop 0 l = l
 drop _ Nil = Nil
 drop n (Cons _ t) = drop (n - 1) t
