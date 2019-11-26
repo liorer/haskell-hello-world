@@ -6,7 +6,7 @@ class Foldable t where
     foldl :: (b -> a -> b) -> b -> t a -> b
     foldr :: (a -> b -> b) -> b -> t a -> b
 
-sum :: Foldable t => t Int -> Int
+sum :: (Num a, Foldable t) => t a -> a
 sum = foldl (+) 0
 
 len :: Foldable t => t a -> Int
