@@ -1,6 +1,8 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 module Main where
 
-import Prelude hiding (foldl, foldr, map, sum, flip, take, drop, Foldable)
+import Prelude (IO, pure)
 
 main :: IO ()
 main = pure ()

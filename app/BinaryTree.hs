@@ -1,8 +1,9 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE InstanceSigs #-}
 
 module BinaryTree where
 
-import Prelude hiding (foldl, foldr, sum, Foldable)
+import Prelude (Show, Int)
 import List (List(..))
 import Foldable (Foldable(..))
 
