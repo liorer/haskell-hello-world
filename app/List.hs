@@ -35,10 +35,7 @@ nat n =
             go m = if m == n then Cons m Nil else Cons m (go(m + 1))
 
 concat :: List a -> List a -> List a
-concat Nil Nil = Nil
-concat l Nil = l
-concat Nil l = l
-concat (Cons h t) l = Cons h (concat t l)
+concat = flip (foldr Cons)
 
 map :: (a -> b) -> List a -> List b
 map f = foldr (\x l -> Cons (f x) l) Nil
