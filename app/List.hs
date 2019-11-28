@@ -3,7 +3,7 @@
 
 module List where
 
-import Prelude (Show(..), Int, (+), (-), (++), (==))
+import Prelude (Show(..), Int, (+), (-), (*), (/), (++), (==), otherwise, undefined, concatMap)
 import Foldable (Foldable(..))
 
 data List a
@@ -30,12 +30,15 @@ instance Foldable List where
 nat :: Int -> List Int
 nat 0 = Nil
 nat n =
-    go 1
-        where
-            go m = if m == n then Cons m Nil else Cons m (go(m + 1))
+    let go m | m == n    = Cons m Nil
+             | otherwise = Cons m (go(m + 1))
+    in go 1
 
 concat :: List a -> List a -> List a
 concat = flip (foldr Cons)
+
+concatMap :: (a -> List b) -> List a -> List b
+concatMap f = foldr (\x l -> concat (f x) l) Nil
 
 map :: (a -> b) -> List a -> List b
 map f = foldr (\x l -> Cons (f x) l) Nil
