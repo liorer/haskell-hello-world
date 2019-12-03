@@ -38,10 +38,14 @@ concat :: List a -> List a -> List a
 concat = flip (foldr Cons)
 
 concatMap :: (a -> List b) -> List a -> List b
-concatMap f = foldr (\x l -> concat (f x) l) Nil
+concatMap f = foldr (concat ∘ f) Nil
 
 map :: (a -> b) -> List a -> List b
-map f = foldr (\x l -> Cons (f x) l) Nil
+map f = foldr (Cons ∘ f) Nil
+
+(∘) :: (b -> c) -> (a -> b) -> a -> c
+(∘) f g x = f (g x)
+infixr 9 ∘
 
 flip :: (a -> b -> c) -> (b -> a -> c)
 flip f x y = f y x
