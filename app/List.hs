@@ -48,9 +48,9 @@ map f = foldr (Cons ∘ f) Nil
 (∘) f g x = f (g x)
 infixr 9 ∘
 
-(§) :: a -> List a -> List a
-(§) = Cons
-infixr 5 §
+(<|) :: a -> List a -> List a
+(<|) = Cons
+infixr 5 <|
 
 flip :: (a -> b -> c) -> (b -> a -> c)
 flip f x y = f y x
@@ -69,10 +69,10 @@ drop _ Nil = Nil
 drop n (Cons _ t) = drop (n - 1) t
 
 repeat :: a -> List a
-repeat x = x § (repeat x)
+repeat x = x <| (repeat x)
 
 iterate :: (a -> a) -> a -> List a
-iterate f x = x § iterate f (f x)
+iterate f x = x <| iterate f (f x)
 
 cycle :: List a -> List a
 cycle l = concat l (cycle l)
@@ -81,9 +81,12 @@ zip :: List a -> List b -> List (Tuple a b)
 zip = zipWith Tuple
 
 unzip :: List (Tuple a b) -> Tuple (List a) (List b)
-unzip = foldr (\(Tuple x y) (Tuple xs ys) -> Tuple (x § xs) (y § ys)) (Tuple Nil Nil)
+unzip = foldr (\(Tuple x y) (Tuple xs ys) -> Tuple (x <| xs) (y <| ys)) (Tuple Nil Nil)
 
 zipWith :: (a -> b -> c) -> List a -> List b -> List c
 zipWith f Nil ys = Nil
 zipWith f xs Nil = Nil
-zipWith f (Cons x xs) (Cons y ys) = (f x y) § (zipWith f xs ys)
+zipWith f (Cons x xs) (Cons y ys) = (f x y) <| (zipWith f xs ys)
+
+fromFoldable :: Foldable t => t a -> List a
+fromFoldable = foldr Cons Nil
