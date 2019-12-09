@@ -1,10 +1,10 @@
 name:                haskell-hello-world
 version:             0.1.0.0
-github:              "githubuser/haskell-hello-world"
+github:              "liorer/haskell-hello-world"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2019 Author name here"
+author:              "Lior Erez"
+maintainer:          "lior.j.erez@gmail.com"
+copyright:           "2019 Lior Erez"
 
 extra-source-files:
 - README.md
