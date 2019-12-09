@@ -33,6 +33,7 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -fwarn-incomplete-patterns
     dependencies:
     - haskell-hello-world
 
@@ -44,5 +45,6 @@ tests:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -fwarn-incomplete-patterns
     dependencies:
     - haskell-hello-world

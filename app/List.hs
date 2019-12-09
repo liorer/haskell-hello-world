@@ -3,9 +3,10 @@
 
 module List where
 
-import Prelude (Show(..), Int, (+), (-), (*), (/), (++), (==), otherwise, undefined, concatMap)
+import Prelude (Show(..), Int, Bool(..), (+), (-), (*), (/), (++), (==), otherwise, undefined, concatMap, Eq)
 import Foldable (Foldable(..))
 import Tuple
+import Maybe
 
 data List a
     = Nil
@@ -90,3 +91,28 @@ zipWith f (Cons x xs) (Cons y ys) = (f x y) <| (zipWith f xs ys)
 
 fromFoldable :: Foldable t => t a -> List a
 fromFoldable = foldr Cons Nil
+
+head :: List a -> Maybe a
+head Nil = Nothing
+head (Cons h _) = Just h
+
+tail :: List a -> Maybe (List a)
+tail Nil = Nothing
+tail (Cons _ t) = Just t
+
+nth :: Int -> List a -> Maybe a
+nth _ Nil = Nothing
+nth 0 l = head l
+nth i l = nth (i - 1) t
+    where
+        t = case tail l of
+                Nothing -> Nil
+                Just x -> x
+
+findIndex :: Eq a => a -> List a -> Maybe Int
+findIndex _ Nil = Nothing
+findIndex x l = check x l 0
+    where
+        check _ Nil _ = Nothing
+        check x (Cons h t) i | h == x    = Just i
+                             | otherwise = check x t (i + 1)
