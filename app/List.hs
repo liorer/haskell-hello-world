@@ -3,8 +3,10 @@
 
 module List where
 
-import Prelude (Show(..), Int, Bool(..), (+), (-), (*), (/), (++), (==), otherwise, undefined, concatMap, Eq)
-import Foldable (Foldable(..))
+import Prelude (Show(..), Int, Num, Bool(..), (+), (-), (*), (/), (++), (==), ($), (.), otherwise, undefined, concatMap, Eq)
+import Foldable
+import Semigroup
+import Monoid
 import Tuple
 import Maybe
 
@@ -28,6 +30,12 @@ instance Foldable List where
     foldr :: (a -> b -> b) -> b -> List a -> b
     foldr _ z Nil = z
     foldr f z (Cons h t) = f h (foldr f z t)
+
+instance Semigroup (List a) where
+    (<>) = concat
+
+instance Monoid (List a) where
+    mempty = Nil
 
 nat :: Int -> List Int
 nat 0 = Nil
@@ -116,3 +124,10 @@ findIndex x l = check x l 0
         check _ Nil _ = Nothing
         check x (Cons h t) i | h == x    = Just i
                              | otherwise = check x t (i + 1)
+
+sigma :: Num a => List a -> a
+sigma = getSum . foldl (\acc v -> acc <> Sum v) mempty
+
+pi :: Num a => List a -> a
+pi = getProduct . foldl (\acc v -> acc <> Product v) mempty
+

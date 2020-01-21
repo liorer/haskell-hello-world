@@ -1,6 +1,6 @@
 module Main where
 
-import Prelude hiding (zipWith, take, drop)
+import Prelude hiding (zipWith, take, drop, (<>))
 import List
 
 main :: IO ()
