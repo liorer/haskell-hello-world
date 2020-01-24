@@ -3,7 +3,7 @@
 
 module List where
 
-import Prelude (Show(..), Int, Num, Bool(..), (+), (-), (*), (/), (++), (==), ($), (.), otherwise, undefined, concatMap, Eq)
+import Prelude (Show(..), Int, Num, Bool(..), (+), (-), (*), (/), (++), (==), ($), (.), otherwise, undefined, concatMap, Eq, const, id)
 import Foldable
 import Semigroup
 import Monoid
@@ -48,14 +48,14 @@ concat :: List a -> List a -> List a
 concat = flip (foldr Cons)
 
 concatMap :: (a -> List b) -> List a -> List b
-concatMap f = foldr (concat ∘ f) Nil
+concatMap f = foldr (concat • f) Nil
 
 map :: (a -> b) -> List a -> List b
-map f = foldr (Cons ∘ f) Nil
+map f = foldr (Cons • f) Nil
 
-(∘) :: (b -> c) -> (a -> b) -> a -> c
-(∘) f g x = f (g x)
-infixr 9 ∘
+(•) :: (b -> c) -> (a -> b) -> a -> c
+(•) f g x = f (g x)
+infixr 9 •
 
 (<|) :: a -> List a -> List a
 (<|) = Cons
@@ -125,9 +125,17 @@ findIndex x l = check x l 0
         check x (Cons h t) i | h == x    = Just i
                              | otherwise = check x t (i + 1)
 
-sigma :: Num a => List a -> a
-sigma = getSum . foldl (\acc v -> acc <> Sum v) mempty
+foldMap :: (Foldable f, Monoid m) => (a -> m) -> f a -> m
+foldMap f = foldl (\acc v -> acc <> f v) mempty
 
-pi :: Num a => List a -> a
-pi = getProduct . foldl (\acc v -> acc <> Product v) mempty
+sigma :: (Foldable f, Num a) => f a -> a
+sigma = getSum • foldMap Sum
 
+pi :: (Foldable f, Num a) => f a -> a
+pi = getProduct • foldMap Product
+
+mlength :: (Foldable f, Num n) => f a -> n
+mlength = getSum • foldMap (const (Sum 1))
+
+fold :: (Foldable f, Monoid m) => f m -> m
+fold = foldMap id
