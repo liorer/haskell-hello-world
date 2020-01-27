@@ -8,6 +8,7 @@ import Foldable
 import Semigroup
 import Monoid
 import Tuple
+import Function
 import Maybe
 
 data List a
@@ -52,10 +53,6 @@ concatMap f = foldr (concat • f) Nil
 
 map :: (a -> b) -> List a -> List b
 map f = foldr (Cons • f) Nil
-
-(•) :: (b -> c) -> (a -> b) -> a -> c
-(•) f g x = f (g x)
-infixr 9 •
 
 (<|) :: a -> List a -> List a
 (<|) = Cons
@@ -125,9 +122,6 @@ findIndex x l = check x l 0
         check x (Cons h t) i | h == x    = Just i
                              | otherwise = check x t (i + 1)
 
-foldMap :: (Foldable f, Monoid m) => (a -> m) -> f a -> m
-foldMap f = foldl (\acc v -> acc <> f v) mempty
-
 sigma :: (Foldable f, Num a) => f a -> a
 sigma = getSum • foldMap Sum
 
@@ -137,5 +131,5 @@ pi = getProduct • foldMap Product
 mlength :: (Foldable f, Num n) => f a -> n
 mlength = getSum • foldMap (const (Sum 1))
 
-fold :: (Foldable f, Monoid m) => f m -> m
-fold = foldMap id
+filter :: Predicate a -> List a -> List a
+filter p = foldr (\v l -> if p v then  v <| l else l) Nil
